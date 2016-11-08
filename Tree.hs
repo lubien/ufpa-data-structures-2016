@@ -1,28 +1,30 @@
 module Tree
-  ( Tree(EmptyTree, Node)
-  , emptyTree
+  ( Tree(Leaf, Node)
+  , leaf
   , tree
   , lowest
   , greatest
   , removeLowest
   , prettyPrint
+  , descendant
+  , ancestor
   ) where
 
 data Tree a
-  = EmptyTree
+  = Leaf
   | Node a (Tree a) (Tree a)
   deriving (Show)
 
-emptyTree :: Tree a
-emptyTree =
-  EmptyTree
+leaf :: Tree a
+leaf =
+  Leaf
 
 tree :: a -> Tree a
 tree x =
-  Node x EmptyTree EmptyTree
+  Node x Leaf Leaf
 
 insert :: Ord a => Tree a -> a -> Tree a
-insert EmptyTree x =
+insert Leaf x =
   tree x
 insert (Node xs left right) x
   | x == xs = Node xs left right
@@ -30,26 +32,26 @@ insert (Node xs left right) x
   | x > xs  = Node x left (insert right x)
 
 lowest :: Tree a -> Maybe a
-lowest EmptyTree =
+lowest Leaf =
   Nothing
-lowest (Node x EmptyTree _) =
+lowest (Node x Leaf _) =
   Just x
 lowest (Node _ left _) =
   lowest left
 
 greatest :: Tree a -> Maybe a
-greatest EmptyTree =
+greatest Leaf =
   Nothing
-greatest (Node x _ EmptyTree) =
+greatest (Node x _ Leaf) =
   Just x
 greatest (Node _ _ right) =
   greatest right
 
 remove :: Ord a => Tree a -> a -> Tree a
-remove EmptyTree _ =
-  EmptyTree
-remove (Node xs EmptyTree EmptyTree) x
-  | x == xs = EmptyTree
+remove Leaf _ =
+  Leaf
+remove (Node xs Leaf Leaf) x
+  | x == xs = Leaf
   | otherwise = tree x
 remove (Node xs left right) x
   | x == xs =
@@ -59,7 +61,7 @@ remove (Node xs left right) x
       Node lowestValue left rest
   | otherwise = Node xs (remove left x) (remove right x)
 
-removeLowest (Node x EmptyTree right) =
+removeLowest (Node x Leaf right) =
   (x, right)
 removeLowest (Node _ left _) =
   removeLowest left
@@ -69,8 +71,8 @@ prettyPrint tree =
     renderIndent indent =
       leftPad $ indent * 2
 
-    prettyPrint EmptyTree indent =
-      (renderIndent indent) ++ "EmptyTree"
+    prettyPrint Leaf indent =
+      (renderIndent indent) ++ "Leaf"
     prettyPrint (Node x left right) indent =
       padding ++ (show x) ++ " {\n" ++
                  (prettyPrint left innerIndent) ++ "\n" ++
@@ -83,3 +85,24 @@ prettyPrint tree =
 
 leftPad n =
   concat $ replicate n " "
+
+-- Exercises 01
+
+-- Utils:
+
+value :: Tree a -> Maybe a
+value Leaf = Nothing
+value (Node v _ _) = Just v
+
+-- b)
+
+descendant :: (Eq a) => Tree a -> a -> a -> Bool
+descendant Leaf _ _ = False
+descendant (Node current left right) a b
+  | current == b = ((value left) == Just a) || ((value right) == Just a)
+  | otherwise = (descendant left a b) || (descendant right a b)
+
+-- c)
+
+ancestor :: (Eq a) => Tree a -> a -> a -> Bool
+ancestor = descendant

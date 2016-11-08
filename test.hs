@@ -9,16 +9,17 @@ fixture =
       )
       (Node 23
         (tree 19)
-        EmptyTree
+        Leaf
       )
     )
     (Node 72
       (Node 54
-        EmptyTree
+        Leaf
         (tree 67)
       )
       (tree 76)
     )
 
 main = do
-  putStrLn $ prettyPrint fixture
+  -- putStrLn $ prettyPrint fixture
+  putStrLn $ show $ ancestor fixture 17 50
