@@ -22,4 +22,12 @@ fixture =
 
 main = do
   -- putStrLn $ prettyPrint fixture
-  putStrLn $ show $ ancestor fixture 17 50
+  -- putStrLn $ show $ ancestor fixture 17 50
+  -- putStrLn $ show $ find fixture 23
+  -- putStrLn $ show $ isNode fixture
+  -- putStrLn $ show $ findDistance fixture 50
+  -- putStrLn $ show $ findDistance fixture 17
+  -- putStrLn $ show $ height Leaf
+  -- putStrLn $ show $ height (Node 10 Leaf Leaf)
+  -- putStrLn $ show $ height fixture
+  putStrLn $ show $ manyChildren fixture

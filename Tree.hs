@@ -8,6 +8,12 @@ module Tree
   , prettyPrint
   , descendant
   , ancestor
+  , find
+  , isLeaf
+  , isNode
+  , findDistance
+  , height
+  , manyChildren
   ) where
 
 data Tree a
@@ -94,6 +100,23 @@ value :: Tree a -> Maybe a
 value Leaf = Nothing
 value (Node v _ _) = Just v
 
+find :: (Eq a, Ord a) => Tree a -> a -> Bool
+find Leaf _ = False
+find (Node value left right) x
+  | x == value = True
+  | x < value  = find left x
+  | x > value  = find right x
+
+-- a)
+
+-- idk how to name it in english so
+-- deal with it
+manyChildren :: Tree a -> Int
+manyChildren Leaf = 0
+manyChildren (Node _ Leaf Leaf) = 0
+manyChildren (Node _ (Node _ _ _) (Node _ _ _)) = 2
+manyChildren _ = 1
+
 -- b)
 
 descendant :: (Eq a) => Tree a -> a -> a -> Bool
@@ -106,3 +129,33 @@ descendant (Node current left right) a b
 
 ancestor :: (Eq a) => Tree a -> a -> a -> Bool
 ancestor = descendant
+
+-- d)
+
+isLeaf :: Tree a -> Bool
+isLeaf Leaf = True
+isLeaf _ = False
+
+isNode :: Tree a -> Bool
+isNode = not . isLeaf
+
+-- e)
+
+findDistance :: (Eq a, Ord a) => Tree a -> a -> Maybe Int
+findDistance tree x =
+  let
+    findDistance' Leaf _ _ = Nothing
+    findDistance' (Node value left right) x acc
+      | x == value = Just acc
+      | x < value  = findDistance' left x (acc + 1)
+      | x > value  = findDistance' right x (acc + 1)
+  in
+    findDistance' tree x 0
+
+-- f)
+
+height :: Tree a -> Int
+height Leaf = 1
+height (Node value left right) =
+  1 + (max (height left) (height right))
+
