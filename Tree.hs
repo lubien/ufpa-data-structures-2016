@@ -14,7 +14,7 @@ module Tree
   , findDistance
   , height
   , manyChildren
-  , genericHeight
+  , genericMinHeight
   ) where
 
 data Tree a
@@ -162,12 +162,12 @@ height (Node value left right) =
 
 -- Exercises 02
 
-genericHeight :: Int -> Int -> Int
-genericHeight _ 1 = 1
-genericHeight arity nodes =
+genericMinHeight :: Int -> Int -> Int
+genericMinHeight _ 1 = 1
+genericMinHeight arity nodes =
   let
     rest = nodes - 1
     best_case = rest `div` arity + rest `mod` arity
   in
-    1 + (genericHeight arity best_case)
+    1 + (genericMinHeight arity best_case)
 
