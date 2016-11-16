@@ -14,6 +14,7 @@ module Tree
   , findDistance
   , height
   , manyChildren
+  , genericHeight
   ) where
 
 data Tree a
@@ -158,4 +159,15 @@ height :: Tree a -> Int
 height Leaf = 1
 height (Node value left right) =
   1 + (max (height left) (height right))
+
+-- Exercises 02
+
+genericHeight :: Int -> Int -> Int
+genericHeight _ 1 = 1
+genericHeight arity nodes =
+  let
+    rest = nodes - 1
+    best_case = rest `div` arity + rest `mod` arity
+  in
+    1 + (genericHeight arity best_case)
 
