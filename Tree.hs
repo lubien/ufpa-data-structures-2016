@@ -15,6 +15,9 @@ module Tree
   , height
   , manyChildren
   , genericMinHeight
+  , complete
+  , full
+  , fullOrComplete
   , preOrder
   ) where
 
@@ -174,9 +177,27 @@ genericMinHeight arity nodes =
 
 -- Exercises 03
 
+complete :: (Ord a) => Tree a -> Int -> Bool
+complete Leaf x
+  | x <= 2 = True
+  | otherwise = False
+complete (Node _ left right) level =
+  (complete left (level - 1)) && (complete right (level - 1))
+
+full :: (Ord a) => Tree a -> Int -> Bool
+full Leaf x
+  | x <= 1 = True
+  | otherwise = False
+full (Node _ left right) level =
+  (full left (level - 1)) && (full right (level - 1))
+
+fullOrComplete :: (Ord a) => Tree a -> Int -> Bool
+fullOrComplete tree height =
+  (full tree height) || (complete tree height)
+
 -- b)
 
--- preOrder :: Tree Char -> [a]
+preOrder :: Tree String -> String
 preOrder Leaf = []
 preOrder (Node x left right) =
   x ++ (preOrder left) ++ (preOrder right)

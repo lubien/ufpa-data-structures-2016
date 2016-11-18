@@ -21,6 +21,9 @@ fixture =
     )
 
 main = do
+  putStrLn $ show $ complete fixture (height fixture)
+  putStrLn $ show $ full fixture (height fixture)
+  putStrLn $ show $ fullOrComplete fixture (height fixture)
   -- putStrLn $ prettyPrint fixture
   -- putStrLn $ show $ ancestor fixture 17 50
   -- putStrLn $ show $ find fixture 23
@@ -30,4 +33,4 @@ main = do
   -- putStrLn $ show $ height Leaf
   -- putStrLn $ show $ height (Node 10 Leaf Leaf)
   -- putStrLn $ show $ height fixture
-  putStrLn $ show $ manyChildren fixture
+  -- putStrLn $ show $ manyChildren fixture
