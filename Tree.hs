@@ -15,6 +15,7 @@ module Tree
   , height
   , manyChildren
   , genericMinHeight
+  , preOrder
   ) where
 
 data Tree a
@@ -170,4 +171,13 @@ genericMinHeight arity nodes =
     best_case = rest `div` arity + rest `mod` arity
   in
     1 + (genericMinHeight arity best_case)
+
+-- Exercises 03
+
+-- b)
+
+-- preOrder :: Tree Char -> [a]
+preOrder Leaf = []
+preOrder (Node x left right) =
+  x ++ (preOrder left) ++ (preOrder right)
 
